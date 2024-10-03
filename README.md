@@ -1,3 +1,5 @@
+# Moved to https://codeberg.org/MicrocontrollersDev/Cosmetica
+
 # Cosmetica
 
 ![](https://img.shields.io/badge/minecraft-1.16.5--1.20.2-blue)
