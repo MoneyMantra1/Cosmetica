@@ -39,6 +39,7 @@ import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
@@ -109,6 +110,19 @@ public class Models {
 					@Nullable
 					public BakedModel bake(ResourceLocation resourceLocation, ModelState modelState) {
 						return this.getModel(resourceLocation).bake(this, l -> sprite, modelState);
+					}
+
+					// IModelBakerExtension methods
+					@Override
+					@Nullable
+					public UnbakedModel getTopLevelModel(ModelResourceLocation modelResourceLocation) {
+						return unbaked.model();
+					}
+
+					@Override
+					@Nullable
+					public BakedModel bake(ResourceLocation resourceLocation, ModelState modelState, Function<Material, TextureAtlasSprite> sprites) {
+						return this.getModel(resourceLocation).bake(this, sprites, modelState);
 					}
 
 					@Override
