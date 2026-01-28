@@ -28,7 +28,7 @@ import net.minecraft.network.chat.Component;
 
 public class CosmeticaErrorScreen extends SulphateScreen {
 	public CosmeticaErrorScreen(Screen parentScreen, Component title, Component message) {
-		super(title);
+		super(title, parentScreen);
 		this.parentScreen = parentScreen;
 		this.message = message;
 		this.setAnchorY(Anchor.TOP, () -> Math.min(this.height / 2 + 9, this.height - 30) + 28);

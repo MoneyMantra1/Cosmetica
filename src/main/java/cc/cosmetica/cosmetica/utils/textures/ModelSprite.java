@@ -100,7 +100,7 @@ public class ModelSprite extends TextureAtlasSprite {
 		private final cc.cosmetica.cosmetica.utils.textures.AnimatedTexture animatedTexture;
 
 		@Override
-		protected int getFrameCount() {
+		public int getFrameCount() {
 			return this.animatedTexture.getFrameCount();
 		}
 

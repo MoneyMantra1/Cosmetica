@@ -33,8 +33,10 @@ import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelState;
@@ -49,6 +51,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.function.Function;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
@@ -106,6 +109,11 @@ public class Models {
 					@Nullable
 					public BakedModel bake(ResourceLocation resourceLocation, ModelState modelState) {
 						return this.getModel(resourceLocation).bake(this, l -> sprite, modelState);
+					}
+
+					@Override
+					public Function<Material, TextureAtlasSprite> getModelTextureGetter() {
+						return material -> sprite;
 					}
 				};
 
