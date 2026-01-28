@@ -16,7 +16,7 @@
 
 package cc.cosmetica.cosmetica.mixin.compat;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.ModList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
@@ -33,7 +33,7 @@ public class TitleScreenMixin extends Screen {
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void onTick(CallbackInfo ci) {
-		if (FabricLoader.getInstance().isModLoaded("essential")) {
+		if (ModList.get().isLoaded("essential")) {
 			this.minecraft.getTextureManager().tick();
 		}
 	}

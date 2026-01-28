@@ -18,8 +18,6 @@ package cc.cosmetica.cosmetica.screens.widget;
 
 import cc.cosmetica.cosmetica.utils.TextComponents;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -72,7 +70,6 @@ public class StringSelection extends Selection<StringSelection.Entry> {
 		super.matchSelected(other);
 	}
 
-	@Environment(EnvType.CLIENT)
 	public class Entry extends Selection.Entry<StringSelection.Entry> {
 		public Entry(String item, int width) {
 			super(StringSelection.this, item);
