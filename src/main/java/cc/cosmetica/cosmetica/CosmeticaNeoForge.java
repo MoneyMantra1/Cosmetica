@@ -18,29 +18,29 @@ package cc.cosmetica.cosmetica;
 
 import cc.cosmetica.cosmetica.cosmetics.model.Models;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
-import net.neoforged.bus.api.IEventBus;
 
 @Mod("cosmetica")
 public class CosmeticaNeoForge {
-	public CosmeticaNeoForge() {
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+	public CosmeticaNeoForge(IEventBus modEventBus) {
 		modEventBus.addListener(this::onClientSetup);
 		modEventBus.addListener(this::registerReloadListeners);
+		modEventBus.addListener(this::onBakingCompleted);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private void onClientSetup(FMLClientSetupEvent event) {
 		event.enqueueWork(Cosmetica::initializeClient);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private void registerReloadListeners(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener((ResourceManagerReloadListener) resourceManager -> Models.resetTextureBasedCaches());
+	}
+
+	private void onBakingCompleted(ModelEvent.BakingCompleted event) {
+		Models.thePieShopDownTheRoad = event.getModelBakery();
 	}
 }

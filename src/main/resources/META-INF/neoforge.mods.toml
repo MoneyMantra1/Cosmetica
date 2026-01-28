@@ -15,8 +15,9 @@ authors="Eyezah, Valoeghese"
 description='''
 Custom cosmetics for free, forever!
 '''
-clientSideOnly=true
-mixinConfigs="cosmetica.mixins.json"
+
+[[mixins]]
+config="cosmetica.mixins.json"
 
 [[dependencies.cosmetica]]
 modId="minecraft"

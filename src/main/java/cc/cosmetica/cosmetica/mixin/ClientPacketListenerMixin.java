@@ -19,12 +19,13 @@ package cc.cosmetica.cosmetica.mixin;
 import cc.cosmetica.cosmetica.cosmetics.PlayerData;
 import cc.cosmetica.cosmetica.utils.DebugMode;
 import cc.cosmetica.cosmetica.Cosmetica;
+import cc.cosmetica.cosmetica.ThreadPool;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundLoginPacket;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -42,6 +43,19 @@ public abstract class ClientPacketListenerMixin {
 			DebugMode.log("Clearing all player data due to login.");
 			Cosmetica.clearAllCaches();
 			PlayerData.get(Minecraft.getInstance().player);
+		}
+	}
+
+	@Inject(at = @At("RETURN"), method = "handlePlayerInfoUpdate")
+	private void afterHandlePlayerInfoUpdate(ClientboundPlayerInfoUpdatePacket packet, CallbackInfo ci) {
+		if (packet.actions().contains(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER)) {
+			for (ClientboundPlayerInfoUpdatePacket.Entry entry : packet.entries()) {
+				final GameProfile profile = entry.profile();
+
+				if (profile != null) {
+					Cosmetica.runOffthread(() -> Cosmetica.forwardPublicUserInfoToNametag(profile), ThreadPool.GENERAL_THREADS);
+				}
+			}
 		}
 	}
 }

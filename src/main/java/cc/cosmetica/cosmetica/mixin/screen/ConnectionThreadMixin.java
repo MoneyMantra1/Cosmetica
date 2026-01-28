@@ -32,14 +32,14 @@ import java.net.InetSocketAddress;
 
 @Mixin(targets = "net/minecraft/client/gui/screens/ConnectScreen$1")
 public class ConnectionThreadMixin {
-	@Shadow @Final private ConnectScreen field_2416;
+	@Shadow @Final private ConnectScreen this$0;
 
 	@Inject(
 			method = "run()V",
 			at = @At(value = "NEW", target = "net/minecraft/network/protocol/login/ServerboundHelloPacket")
 	)
 	private void onHello(CallbackInfo ci) {
-		Connection c = ((ConnectScreenInvoker)this.field_2416).getConnection();
+		Connection c = ((ConnectScreenInvoker)this.this$0).getConnection();
 
 		// ping africa
 		if (Minecraft.getInstance().isLocalServer()) {

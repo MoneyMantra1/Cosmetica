@@ -5,7 +5,6 @@
   "refmap": "cosmetica.refmap.json",
   "client": [
     "ButtonAccessor",
-    "ClientboundPlayerInfoUpdatePacketActionMixin",
     "ClientLevelMixin",
     "ClientPacketListenerMixin",
     "ElytraLayerMixin",
@@ -14,7 +13,6 @@
     "LivingEntityRendererMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
-    "ModelManagerMixin",
     "PlayerEntityRendererMixin",
     "PlayerMixin",
     "PlayerRendererMixin",
