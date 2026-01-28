@@ -30,7 +30,7 @@ import cc.cosmetica.cosmetica.utils.textures.LocalCapeTexture;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.mojang.blaze3d.platform.NativeImage;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.resources.ResourceLocation;
@@ -54,7 +54,7 @@ import java.util.function.Supplier;
  * A set of utilities for debug
  */
 public class DebugMode {
-	public static final boolean ENABLED = FabricLoader.getInstance().isDevelopmentEnvironment() || Boolean.getBoolean("cosmetica.debug");
+	public static final boolean ENABLED = !FMLLoader.isProduction() || Boolean.getBoolean("cosmetica.debug");
 	private static final boolean EXTRA_LOGGING = Boolean.getBoolean("cosmetica.extraLogging");
 
 	private static final File CONFIG_DIR;
@@ -258,7 +258,7 @@ public class DebugMode {
 
 	static {
 		// cosmetica's data folders
-		CONFIG_DIR = new File(FabricLoader.getInstance().getConfigDir().toFile(), "cosmetica");
+		CONFIG_DIR = new File(net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get().toFile(), "cosmetica");
 		DEBUG_SETTINGS = new File(CONFIG_DIR, "debug_settings.json");
 
 		if (ENABLED) {

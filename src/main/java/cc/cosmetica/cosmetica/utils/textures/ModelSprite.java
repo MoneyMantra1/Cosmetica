@@ -19,7 +19,7 @@ package cc.cosmetica.cosmetica.utils.textures;
 import cc.cosmetica.cosmetica.utils.DebugMode;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.NativeImage;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLLoader;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.SpriteTicker;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -65,7 +65,7 @@ public class ModelSprite extends TextureAtlasSprite {
 
 	@Override
 	public ResourceLocation atlasLocation() {
-		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+		if (!FMLLoader.isProduction()) {
 			throw new UnsupportedOperationException("I am a teapot. Tried to call atlasLocation() on cosmetica ModelSprite.");
 		}
 		else {

@@ -1,0 +1,33 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="Apache-2.0"
+issueTrackerURL="https://github.com/Cosmetica-cc/Cosmetica/issues"
+
+[[mods]]
+modId="cosmetica"
+version="${version}"
+displayName="Cosmetica"
+updateJSONURL=""
+displayURL="https://cosmetica.cc"
+logoFile="assets/cosmetica/icon.png"
+credits=""
+authors="Eyezah, Valoeghese"
+description='''
+Custom cosmetics for free, forever!
+'''
+clientSideOnly=true
+mixinConfigs="cosmetica.mixins.json"
+
+[[dependencies.cosmetica]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.21.1,1.22)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.cosmetica]]
+modId="neoforge"
+mandatory=true
+versionRange="[21.1,)"
+ordering="NONE"
+side="CLIENT"

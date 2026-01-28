@@ -16,8 +16,6 @@
 
 package cc.cosmetica.cosmetica.screens.widget;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -89,7 +87,6 @@ abstract class Selection<T extends Selection.Entry<T>> extends ObjectSelectionLi
 		super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
 	}
 
-	@Environment(EnvType.CLIENT)
 	public abstract static class Entry<E extends Selection.Entry<E>> extends ObjectSelectionList.Entry<E> {
 		final String item;
 		protected final Selection selection;

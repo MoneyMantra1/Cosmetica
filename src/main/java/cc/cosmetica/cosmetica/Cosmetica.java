@@ -52,12 +52,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLPaths;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
@@ -75,8 +71,6 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -126,8 +120,7 @@ import java.util.stream.Collectors;
 
 import static cc.cosmetica.cosmetica.Authentication.runSyncSettingsThread;
 
-@Environment(EnvType.CLIENT)
-public class Cosmetica implements ClientModInitializer {
+public class Cosmetica {
 	public static String authServer;
 	public static String websiteHost;
 	// Initialise to an unauthenticated instance, Authenticate later, if possible.
@@ -196,9 +189,8 @@ public class Cosmetica implements ClientModInitializer {
 		return mayShowWelcomeScreen;
 	}
 
-	@Override
-	public void onInitializeClient() {
-		config = new CosmeticaConfig(FabricLoader.getInstance().getConfigDir().resolve("cosmetica").resolve("cosmetica.properties"));
+	public static void initializeClient() {
+		config = new CosmeticaConfig(FMLPaths.CONFIGDIR.get().resolve("cosmetica").resolve("cosmetica.properties"));
 
 		setupDirectories();
 
@@ -235,9 +227,14 @@ public class Cosmetica implements ClientModInitializer {
 
 					DebugMode.log("Checking Version...");
 
+					String modVersion = ModList.get()
+							.getModContainerById("cosmetica")
+							.map(container -> container.getModInfo().getVersion().toString())
+							.orElse("unknown");
+
 					api.checkVersion(
 							SharedConstants.getCurrentVersion().getId(),
-							FabricLoader.getInstance().getModContainer("cosmetica").get().getMetadata().getVersion().getFriendlyString()
+							modVersion
 					).ifSuccessfulOrElse(versionInfo -> {
 						DebugMode.log("Handling version check response");
 
@@ -272,19 +269,6 @@ public class Cosmetica implements ClientModInitializer {
 			}
 		}
 
-		// make sure it clears relevant caches on resource reload
-		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-			@Override
-			public ResourceLocation getFabricId() {
-				return ResourceLocation.tryBuild("cosmetica", "cache_clearer");
-			}
-
-			@Override
-			public void onResourceManagerReload(ResourceManager resourceManager) {
-				Models.resetTextureBasedCaches(); // reset only the caches that need to be reset after a resource reload
-			}
-		});
-
 		// Make nametag request for own profile on startupit
 		// see comment in Cosmetica.forwardPublicUserInfoToNametag
 		GameProfile userProfile = Minecraft.getInstance().getGameProfile();
@@ -299,15 +283,15 @@ public class Cosmetica implements ClientModInitializer {
 	}
 
 	private static void setupDirectories() {
-		configDirectory = FabricLoader.getInstance().getConfigDir().resolve("cosmetica");
-		defaultSettingsConfig = new DefaultSettingsConfig(FabricLoader.getInstance().getConfigDir().resolve("cosmetica").resolve("default-settings.properties"));
+		configDirectory = FMLPaths.CONFIGDIR.get().resolve("cosmetica");
+		defaultSettingsConfig = new DefaultSettingsConfig(FMLPaths.CONFIGDIR.get().resolve("cosmetica").resolve("default-settings.properties"));
 
 		Path minecraftDir = findDefaultInstallDir("minecraft");
 
 		if (Files.isDirectory(minecraftDir)) {
 			cacheDirectory = minecraftDir.resolve(".cosmetica");
 		} else {
-			cacheDirectory = FabricLoader.getInstance().getGameDir().resolve(".cosmetica");
+			cacheDirectory = FMLPaths.GAMEDIR.get().resolve(".cosmetica");
 		}
 
 		// create cache directory if it doesn't exist
