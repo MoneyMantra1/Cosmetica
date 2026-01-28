@@ -54,8 +54,12 @@ tasks.processResources {
 }
 
 dependencies {
-	implementation "com.github.Cosmetica-cc:CosmeticaDotJava:${project.cosmetica_dot_java_version}"
-	jarJar "com.github.Cosmetica-cc:CosmeticaDotJava:${project.cosmetica_dot_java_version}"
+	jarJar(implementation("com.github.Cosmetica-cc:CosmeticaDotJava")) {
+		version {
+			strictly "[${project.cosmetica_dot_java_version}]"
+			prefer "${project.cosmetica_dot_java_version}"
+		}
+	}
 
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
