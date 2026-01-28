@@ -112,6 +112,12 @@ public class Models {
 					}
 
 					@Override
+					@Nullable
+					public BakedModel bakeUncached(UnbakedModel model, ModelState state, Function<Material, TextureAtlasSprite> sprites) {
+						return model.bake(this, sprites, state);
+					}
+
+					@Override
 					public Function<Material, TextureAtlasSprite> getModelTextureGetter() {
 						return material -> sprite;
 					}
