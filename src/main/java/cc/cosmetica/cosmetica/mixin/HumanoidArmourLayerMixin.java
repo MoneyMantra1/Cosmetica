@@ -44,7 +44,7 @@ public class HumanoidArmourLayerMixin {
 	/**
 	 * Implements Armour Conflict Handling Mode: Hide Armour
 	 */
-	@Inject(at = @At("HEAD"), method = "renderArmorPiece", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "renderArmorPiece", cancellable = true, require = 0)
 	private void onRenderArmorPiece(PoseStack poseStack, MultiBufferSource multiBufferSource, LivingEntity livingEntity,
 									EquipmentSlot equipmentSlot, int i, HumanoidModel humanoidModel, CallbackInfo info) {
 		if (livingEntity instanceof AbstractClientPlayer) {

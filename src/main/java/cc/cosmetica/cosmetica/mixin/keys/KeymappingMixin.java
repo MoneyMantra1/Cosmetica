@@ -54,7 +54,7 @@ public class KeymappingMixin {
 		SpecialKeyMapping.clearMappings();
 	}
 
-	@Redirect(at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), method = "resetMapping")
+	@Redirect(at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), method = "resetMapping", require = 0)
 	private static Object set(Map map, Object key, Object keyMapping) {
 		return (key instanceof InputConstants.Key k && keyMapping instanceof SpecialKeyMapping spkm) ? SpecialKeyMapping.putMapping(k, spkm) : map.put(key, keyMapping);
 	}

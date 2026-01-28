@@ -33,13 +33,13 @@ public class InventoryScreenMixin {
 	@Unique
 	private static boolean cosmetica_showNametagInThirdPerson;
 
-	@Inject(at = @At("HEAD"), method = "renderEntityInInventory")
+	@Inject(at = @At("HEAD"), method = "renderEntityInInventory", require = 0)
 	private static void disableOwnNametagTemporarilyIfShown(GuiGraphics guiGraphics, float f, float g, float h, Vector3f vector3f, Quaternionf quaternionf, Quaternionf quaternionf2, LivingEntity livingEntity, CallbackInfo ci) {
 		cosmetica_showNametagInThirdPerson = Cosmetica.getConfig().shouldShowNametagInThirdPerson();
 		Cosmetica.getConfig().setShowNametagInThirdPerson(false);
 	}
 
-	@Inject(at = @At("RETURN"), method = "renderEntityInInventory")
+	@Inject(at = @At("RETURN"), method = "renderEntityInInventory", require = 0)
 	private static void reenableNametag(GuiGraphics guiGraphics, float f, float g, float h, Vector3f vector3f, Quaternionf quaternionf, Quaternionf quaternionf2, LivingEntity livingEntity, CallbackInfo ci) {
 		Cosmetica.getConfig().setShowNametagInThirdPerson(cosmetica_showNametagInThirdPerson);
 	}

@@ -31,7 +31,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class ElytraLayerMixin {
 	@WrapOperation(
 			method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;armorCutoutNoCull(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;")
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;armorCutoutNoCull(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;"),
+			require = 0
 	)
 	private RenderType enableElytraTransparency(ResourceLocation resourceLocation, Operation<RenderType> original) {
 		return RenderType.entityTranslucent(resourceLocation);
@@ -39,7 +40,8 @@ public abstract class ElytraLayerMixin {
 
 	@WrapOperation(
 			method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;getArmorFoilBuffer(Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/renderer/RenderType;Z)Lcom/mojang/blaze3d/vertex/VertexConsumer;")
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;getArmorFoilBuffer(Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/renderer/RenderType;Z)Lcom/mojang/blaze3d/vertex/VertexConsumer;"),
+			require = 0
 	)
 	private VertexConsumer allowTransparentWings(MultiBufferSource buffers, RenderType layer, boolean glint, Operation<VertexConsumer> original) {
 		return glint ? VertexMultiConsumer.create(buffers.getBuffer(RenderType.entityGlint()), buffers.getBuffer(layer)) : original.call(buffers, layer, glint);

@@ -40,7 +40,7 @@ public class PlayerTabOverlayMixin {
 	//         Add Full Space Character to Name        //
 	// =============================================== //
 
-	@ModifyReturnValue(at = @At("RETURN"), method = "getNameForDisplay")
+	@ModifyReturnValue(at = @At("RETURN"), method = "getNameForDisplay", require = 0)
 	private Component modifyTablistDisplayName(Component original, @Local(argsOnly = true) PlayerInfo playerInfo) {
 		PlayerData data = PlayerData.get(playerInfo.getProfile().getId(), playerInfo.getProfile().getName(), false);
 
@@ -56,7 +56,7 @@ public class PlayerTabOverlayMixin {
 
 	@Shadow @Final private Minecraft minecraft;
 
-	@Inject(at = @At("HEAD"), method = "renderPingIcon")
+	@Inject(at = @At("HEAD"), method = "renderPingIcon", require = 0)
 	private void onRenderPingIcon(GuiGraphics stack, int p, int x, int y, PlayerInfo playerInfo, CallbackInfo ci) {
 		boolean bl = this.minecraft.isLocalServer() || this.minecraft.getConnection().getConnection().isEncrypted();
 		Cosmetica.renderTabIcon(stack.pose(), x + (bl ? 9 : 0), y, playerInfo.getProfile().getId(), playerInfo.getProfile().getName());
