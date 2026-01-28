@@ -203,8 +203,6 @@ public class BrowseCosmeticsScreen<T extends CustomCosmetic, E> extends PlayerRe
 			this.rebuildGUI();
 		});
 
-		this.addWidget(this.searchBox);
-
 		if (loadEdition) {
 			this.addRenderableOnly(this.createViewSelection());
 		}
