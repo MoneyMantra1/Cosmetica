@@ -210,10 +210,11 @@ public class BrowseCosmeticsScreen<T extends CustomCosmetic, E> extends PlayerRe
 			this.addRenderableWidget(this.createViewSelection());
 		}
 
-		// bottom
+		// bottom - first row of buttons (using grid layout)
 		this.setAnchorY(Anchor.TOP, () -> this.height - 75);
+		this.setXSeparation(5);
 
-		Button pageBack = this.addButton(100, 20, TextComponents.translatable("cosmetica.selection.pageBack"), b -> {
+		Button pageBack = this.addButton(175, 20, TextComponents.translatable("cosmetica.selection.pageBack"), b -> {
 			this.page--;
 			this.state = LoadState.RELOADING;
 			this.rebuildGUI();
@@ -221,12 +222,12 @@ public class BrowseCosmeticsScreen<T extends CustomCosmetic, E> extends PlayerRe
 
 		if (this.page == 1 || loadEdition) pageBack.active = false;
 
-		Button clear = this.addButton(this.type == CosmeticType.SHOULDER_BUDDY || this.type == CosmeticType.BACK_BLING ? 150 : 100, 20, TextComponents.translatable("cosmetica.selection.remove").append(TextComponents.translatable("cosmetica.entry." + ApplyCosmeticsScreen.getTranslationPart(this.type))),
+		Button clear = this.addButton(175, 20, TextComponents.translatable("cosmetica.selection.remove").append(TextComponents.translatable("cosmetica.entry." + ApplyCosmeticsScreen.getTranslationPart(this.type))),
 				b -> this.minecraft.setScreen(new ApplyCosmeticsScreen<>(this, (PlayerRenderScreen) this.parent, this.type, this.overrider, null, this.yRotBodyPrev, this.yRotPrev)));
 
 		if (loadEdition) clear.active = false;
 
-		Button pageForward = this.addButton(100, 20, TextComponents.translatable("cosmetica.selection.pageForward"), b -> {
+		Button pageForward = this.addButton(175, 20, TextComponents.translatable("cosmetica.selection.pageForward"), b -> {
 			this.page++;
 			this.state = LoadState.RELOADING;
 			this.rebuildGUI();
@@ -234,8 +235,18 @@ public class BrowseCosmeticsScreen<T extends CustomCosmetic, E> extends PlayerRe
 
 		if (!this.nextPage || loadEdition) pageForward.active = false;
 
-		this.addButton(150, 20, CommonComponents.GUI_CANCEL, b -> this.onClose());
-		this.proceed = this.addButton(150, 20, TextComponents.translatable("cosmetica.selection.proceed"), b -> this.minecraft.setScreen(new ApplyCosmeticsScreen<T, E>(this, (PlayerRenderScreen) this.parent, this.type, this.overrider, this.viewSelection.getSelectedCosmetic(), this.yRotBodyPrev, this.yRotPrev)));
+		// bottom - second row (manually positioned, centered)
+		int cancelProceedY = this.height - 30;
+		int cancelProceedWidth = 150;
+		int cancelProceedSpacing = 5;
+		int totalWidth = cancelProceedWidth * 2 + cancelProceedSpacing;
+		int startX = this.width / 2 - totalWidth / 2;
+
+		ClassicButton cancelBtn = new ClassicButton(startX, cancelProceedY, cancelProceedWidth, 20, CommonComponents.GUI_CANCEL, b -> this.onClose(), null);
+		this.addRenderableWidget(cancelBtn);
+
+		this.proceed = new ClassicButton(startX + cancelProceedWidth + cancelProceedSpacing, cancelProceedY, cancelProceedWidth, 20, TextComponents.translatable("cosmetica.selection.proceed"), b -> this.minecraft.setScreen(new ApplyCosmeticsScreen<T, E>(this, (PlayerRenderScreen) this.parent, this.type, this.overrider, this.viewSelection.getSelectedCosmetic(), this.yRotBodyPrev, this.yRotPrev)), null);
+		this.addRenderableWidget(this.proceed);
 		this.proceed.active = false;
 	}
 
