@@ -24,6 +24,7 @@ import cc.cosmetica.cosmetica.utils.TextComponents;
 import cc.cosmetica.cosmetica.screens.PlayerRenderScreen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -138,25 +139,22 @@ public class SelectableFakePlayers<T> extends AbstractWidget {
 				Tesselator tesselator = Tesselator.getInstance();
 				BufferBuilder bb = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-				RenderSystem.setShader(GameRenderer::getPositionShader);
-				float shade = 1.0F;
+				RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-				RenderSystem.setShaderColor(shade, shade, shade, 1.0F);
-				bb.addVertex(x0, y1, 0.0F);
-				bb.addVertex(x1, y1, 0.0F);
-				bb.addVertex(x1, y0, 0.0F);
-				bb.addVertex(x0, y0, 0.0F);
-				bb.buildOrThrow();
+				// White border (outer quad)
+				bb.addVertex(x0, y1, 0.0F).setColor(1.0F, 1.0F, 1.0F, 1.0F);
+				bb.addVertex(x1, y1, 0.0F).setColor(1.0F, 1.0F, 1.0F, 1.0F);
+				bb.addVertex(x1, y0, 0.0F).setColor(1.0F, 1.0F, 1.0F, 1.0F);
+				bb.addVertex(x0, y0, 0.0F).setColor(1.0F, 1.0F, 1.0F, 1.0F);
+				BufferUploader.drawWithShader(bb.buildOrThrow());
 
-				RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
+				// Black fill (inner quad)
 				bb = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-				bb.addVertex(x0 + 1, y1 - 1, 0.0F);
-				bb.addVertex(x1 - 1, y1 - 1, 0.0F);
-				bb.addVertex(x1 - 1, y0 + 1, 0.0F);
-				bb.addVertex(x0 + 1, y0 + 1, 0.0F);
-				bb.buildOrThrow();
-
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				bb.addVertex(x0 + 1, y1 - 1, 0.0F).setColor(0.0F, 0.0F, 0.0F, 1.0F);
+				bb.addVertex(x1 - 1, y1 - 1, 0.0F).setColor(0.0F, 0.0F, 0.0F, 1.0F);
+				bb.addVertex(x1 - 1, y0 + 1, 0.0F).setColor(0.0F, 0.0F, 0.0F, 1.0F);
+				bb.addVertex(x0 + 1, y0 + 1, 0.0F).setColor(0.0F, 0.0F, 0.0F, 1.0F);
+				BufferUploader.drawWithShader(bb.buildOrThrow());
 			}
 
 			this.overrider.setIndex(j); // to make sure it's all -1 at the end we use this.overrider for index setting but really it doesn't matter because it's only for hats anyway
