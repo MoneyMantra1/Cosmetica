@@ -74,6 +74,8 @@ public class MainScreen extends PlayerRenderScreen {
 
 	@Override
 	protected void addWidgets() {
+		this.setYSeparation(4); // Reduce spacing to prevent overlap with bottom buttons on small screens
+
 		this.addButton(150, 20, TextComponents.translatable("cosmetica.customizeCosmetics"), button -> {
 			this.demo = false;
 			this.minecraft.setScreen(new CustomiseCosmeticsScreen(this, this.fakePlayer, this.cosmeticaOptions, 1.0 - this.getTransitionProgress()));
