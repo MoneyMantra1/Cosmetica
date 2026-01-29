@@ -40,6 +40,7 @@ public class CosmeticaSettingsScreen extends SulphateScreen {
 		this.setAnchorY(Anchor.TOP, () -> this.height / 6);
 		this.setAnchorX(Anchor.LEFT, () -> this.width/2 - 150 - this.getXSeparation()/2);
 		this.setRows(2);
+		this.setYSeparation(4); // Reduce spacing to prevent overlap with Done button
 	}
 
 	private final Screen parentScreen;
@@ -106,8 +107,8 @@ public class CosmeticaSettingsScreen extends SulphateScreen {
 				this.minecraft.setScreen(new ArmourConflictModeScreen(this))
 		);
 
-		// when done, update settings
-		this.addRenderableWidget(new ClassicButton(this.width / 2 - 100, this.height / 6 + 24 * 5 + 12, 200, 20, CommonComponents.GUI_DONE, (button) -> {
+		// when done, update settings (5 rows * 24px per row with reduced spacing + margin)
+		this.addRenderableWidget(new ClassicButton(this.width / 2 - 100, this.height / 6 + 24 * 5 + 24, 200, 20, CommonComponents.GUI_DONE, (button) -> {
 
 			try {
 				if (this.parentScreen instanceof MainScreen main) {
