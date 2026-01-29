@@ -37,7 +37,8 @@ public class ScreenMixin implements ExtendedScreen {
 	@Shadow @Nullable protected Minecraft minecraft;
 	@Shadow @Final protected java.util.List<Renderable> renderables;
 	@Shadow @Final protected java.util.List<GuiEventListener> children;
-	@Shadow protected Component title;
+	// Note: title field is final in 1.21.1+, cannot be shadowed as mutable
+	// @Shadow protected Component title;
 
 	@Inject(at = @At("HEAD"), method = "handleComponentClicked", cancellable = true)
 	private void onHandleClick(Style style, CallbackInfoReturnable<Boolean> info) {
@@ -57,7 +58,9 @@ public class ScreenMixin implements ExtendedScreen {
 	}
 
 	@Override
+	@Deprecated
 	public void setTitle(Component title) {
-		this.title = title;
+		// No-op: Screen.title is final in 1.21.1+
+		// Use a separate field for dynamic titles instead
 	}
 }

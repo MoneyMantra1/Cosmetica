@@ -36,6 +36,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,6 +67,8 @@ public class SelectLoreScreen extends SulphateScreen {
 
 	// for message
 	@Nullable MultiLineLabel pleaseUseWebsite;
+	// Dynamic title that can be updated (Screen.title is final in 1.21.1)
+	private Component dynamicTitle;
 
 	@Override
 	protected void addWidgets() {
@@ -183,7 +186,8 @@ public class SelectLoreScreen extends SulphateScreen {
 	}
 
 	private void updateTitle() {
-		((ExtendedScreen) this).setTitle(this.lore.isEmpty() ? this.baseTitle : this.baseTitle.copy().append(TextComponents.literal(": " + this.colour + this.lore)));
+		// Screen.title is final in 1.21.1, so use a separate dynamic title field
+		this.dynamicTitle = this.lore.isEmpty() ? this.baseTitle : this.baseTitle.copy().append(TextComponents.literal(": " + this.colour + this.lore));
 	}
 
 	@Override
@@ -192,7 +196,9 @@ public class SelectLoreScreen extends SulphateScreen {
 
 		if (this.pleaseUseWebsite == null) {
 			// re-add title because it's drawn over with a selection list present (which is used when there is no please use website notice)
-			graphics.drawCenteredString(this.font, this.title, this.width / 2, 15, 0xFFFFFF);
+			// Use dynamicTitle if set, otherwise fall back to the static title
+			Component titleToRender = this.dynamicTitle != null ? this.dynamicTitle : this.title;
+			graphics.drawCenteredString(this.font, titleToRender, this.width / 2, 15, 0xFFFFFF);
 		}
 		else {
 			this.pleaseUseWebsite.renderCentered(graphics, this.width / 2, this.height / 2);

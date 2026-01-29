@@ -11,5 +11,9 @@ public interface ExtendedScreen {
 
 	List<? extends Renderable> getWidgets();
 
+	/**
+	 * @deprecated Screen.title is final in 1.21.1+. Use a separate field for dynamic titles.
+	 */
+	@Deprecated
 	void setTitle(Component title);
 }
