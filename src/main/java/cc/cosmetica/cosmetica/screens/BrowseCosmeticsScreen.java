@@ -211,7 +211,7 @@ public class BrowseCosmeticsScreen<T extends CustomCosmetic, E> extends PlayerRe
 		}
 
 		// bottom - first row of buttons (using grid layout)
-		this.setAnchorY(Anchor.TOP, () -> this.height - 75);
+		this.setAnchorY(Anchor.TOP, () -> this.height - 55);
 		this.setXSeparation(5);
 
 		Button pageBack = this.addButton(175, 20, TextComponents.translatable("cosmetica.selection.pageBack"), b -> {
